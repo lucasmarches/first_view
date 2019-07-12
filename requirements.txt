@@ -1,0 +1,12 @@
+beautifulsoup4==4.6.0
+bs4==0.0.1
+cssselect==1.0.3
+dj-database-url==0.5.0
+Django==2.2.2
+gunicorn==19.9.0
+parsedatetime==2.4
+psycopg2-binary==2.8.3
+pyOpenSSL==19.0.0
+requests==2.18.4
+selenium==3.141.0
+whitenoise==4.1.2
