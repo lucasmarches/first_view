@@ -1,0 +1,91 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <!--Cade Decisions -->
+    <div class="cade">
+      <h2>Cade</h2>
+      {% if cade.0|length > 0 %}
+      <h3> Decisions published today: </h3>
+      {% for element in cade.0 %}
+        <p> Process: {{ element.1 }} </p>
+        <p> Companies: {{ element.0 }} </p>
+        <p> Decision: {{ element.2 }} </p>
+      {% endfor %}
+      {% endif %}
+      {% if cade.1|length > 0 %}
+      <h3> New Cases in Cade: </h3>
+        {% for element in cade.1 %}
+        <p> Process: {{ element.0 }} </p>
+        <p> Companies: {{ element.1 }} </p>
+        <p> Operation: {{ element.2 }} </p>
+        {% endfor %}
+      {% endif %}
+      {% if cade.2|length > 0 %}
+      <div class="cade_other">
+      <h3> Other decisions published today: </h3>
+        <div class="other_info">
+          {% for element in cade.2 %}
+            <p> {{ element }} </p>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if cade.0|length == 0 %}
+      {% if cade.1|length == 0 %}
+      {% if cade.2|length == 0 %}
+      <p> Nothing at Cade today.</p>
+      {% endif %}
+      {% endif %}
+      {% endif %}
+    </div>
+    <!--Executive Decisions -->
+    <div class="imp_decisions">
+      <h2>Important Decisions</h2>
+
+      {% if imp_decisions.0|length > 0 %}
+        <h3> Emergential decrees today: </h3>
+        {% for element in imp_decisions.0 %}
+          <p> Origin: {{ element.0 }} </p>
+          <p> Intro: {{ element.1 }} </p>
+          <p> Link: <a href="{{ element.2 }}"> {{ element.2 }} </a></p>
+        {% endfor %}
+      {% endif %}
+
+      {% if imp_decisions.1|length > 0 %}
+        <h3> Presidential measures: </h3>
+        {% for element in imp_decisions.1 %}
+          <p> Origin: {{ element.0 }} </p>
+          <p> Intro: {{ element.1 }} </p>
+          <p> Link: <a href="{{ element.2 }}"> {{ element.2 }} </a></p>
+        {% endfor %}
+      {% endif %}
+
+      {% if imp_decisions.2|length > 0 %}
+        <h3> Economical measures: </h3>
+          {% for element in imp_decisions.2 %}
+          <p> Origin: {{ element.0 }} </p>
+          <p> Intro: {{ element.1 }} </p>
+          <p> Link: <a href="{{ element.2 }}"> {{ element.2 }} </a></p>
+          {% endfor %}
+      {% endif %}
+
+      {% if imp_decisions.3|length > 0 %}
+        <h3> Other measures: </h3>
+          {% for element in imp_decisions.3 %}
+          <p> Origin: {{ element.0 }} </p>
+          <p> Intro: {{ element.1 }} </p>
+          <p> Link: <a href="{{ element.2 }}"> {{ element.2 }} </a></p>
+          {% endfor %}
+      {% endif %}
+
+    {% if imp_decisions.0|length == 0 %}
+    {% if imp_decisions.1|length == 0 %}
+    {% if imp_decisions.2|length == 0 %}
+    {% if imp_decisions.3|length == 0 %}
+    <p> No executive decisions today.</p>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}

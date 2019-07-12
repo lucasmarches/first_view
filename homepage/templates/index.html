@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="text_body">
+    {% if holiday %}
+      <p> Today is the {{ day }} of {{ month }}, a {{ weekday }}. Since it is not a working day, there isn't an Official Diary. </p>
+    {% else %}
+      <p> Today is the {{ day }} of {{ month }}, a {{ weekday }}. Since it is a working day, there is an Official Diary. </p>
+      <p> Do you want me to have a first view of its content? </p>
+      <div id="loading_div"></div>
+      <div id="button_div"><a href="{% url 'results_page_first' %}" id="a_yes"> <button type="button" id="yes_btn"><span>Yes</span></button> </a></div>
+    {% endif %}
+    </div>
+    {% load static %}
+    <script src="{% static 'js/homepage.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>First View</title>
+    <meta name="First View" content="A first automated view on the Brazilian Official Diary">
+    <link href="https://fonts.googleapis.com/css?family=B612+Mono&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+
+
+  <body>
+    <div class="topnav">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'public_jobs' %}">Public Jobs</a>
+      <a href="{% url 'cade_cases' %}">Cade cases</a>
+      <a href="{% url 'about' %}">About</a>
+      <a class="right">First View </a>
+    </div>
+  {% block content %}{% endblock %}
+  </body>
+</html>

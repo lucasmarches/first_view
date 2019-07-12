@@ -1,0 +1,56 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="cade_cases_title">
+    <h2>Cade Cases</h2>
+    </div>
+
+    {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
+                {% endif %}
+            </span>
+        </div>
+      {% endif %}
+    <table>
+      <tr>
+        <th>Process Number</th>
+        <th>Companies</th>
+        <th>Operation</th>
+        <th>Start Date</th>
+      </tr>
+    {% for case in cadecases_list %}
+      <tr>
+        <td>{{ case.process_number }}</td>
+        <td>{{ case.companies }}</td>
+        <td>{{ case.operation }}</td>
+        <td>{{ case.date }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% if is_paginated %}
+      <div class="pagination_bottom">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+              {% endif %}
+              <span class="page-current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
+{% endblock %}
+{% endblock %}

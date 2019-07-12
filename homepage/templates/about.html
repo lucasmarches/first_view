@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="text_body">
+      <p>Project created by Lucas Marchesini for the MSc in Computational and Data Journalism at Cardiff University. </p>
+      <p> The website is an automated reader of the Brazilian Official Diary based in Python and Django. </p>
+    </div>
+    {% load static %}
+    <script src="{% static 'js/homepage.js' %}"></script>
+{% endblock %}
