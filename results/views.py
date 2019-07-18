@@ -5,7 +5,6 @@ from django.views import generic
 from .models import LinkSection1, LinkSection2, LinkSection3, PublicJobs, CadeCases
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 import re
 import requests
@@ -16,10 +15,11 @@ import os
 def get_links(secao, day, month, year):
     url = "http://www.in.gov.br/leiturajornal?data=" + str(day) + "-" + str(month) + "-" + str(year) + "&secao=do" + str(secao)
     #Open the browser in headless mode and go to the webpage where the scrapping will start
-    options = Options()
-    options.headless = True
-    options.binary_location = os.environ.get('FIREFOX_BIN')
-    driver = webdriver.Firefox(executable_path=str(os.environ.get('GECKODRIVER_PATH')), options=options)
+    chrome_options = Options()
+    chrome_options.binary_location = GOOGLE_CHROME_BIN
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
     driver.get(url)
 
     #Creates the lists that will be returned in the end
