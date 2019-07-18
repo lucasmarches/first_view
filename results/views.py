@@ -9,6 +9,7 @@ from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 import re
 import requests
+import os
 
 
 #Creates the function that will get the links
@@ -17,8 +18,8 @@ def get_links(secao, day, month, year):
     #Open the browser in headless mode and go to the webpage where the scrapping will start
     options = Options()
     options.headless = True
-    options.binary_location = "/app/vendor/geckodriver/geckodriver"
-    driver = webdriver.Firefox(options=options)
+    options.binary_location = os.environ.get('FIREFOX_BIN')
+    driver = webdriver.Firefox(executable_path=str(os.environ.get('GECKODRIVER_PATH')), options=options)
     driver.get(url)
 
     #Creates the lists that will be returned in the end
