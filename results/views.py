@@ -17,10 +17,10 @@ def get_links(secao, day, month, year):
     url = "http://www.in.gov.br/leiturajornal?data=" + str(day) + "-" + str(month) + "-" + str(year) + "&secao=do" + str(secao)
     #Open the browser in headless mode and go to the webpage where the scrapping will start
     chrome_options = Options()
-    chrome_options.binary_location = "GOOGLE_CHROME_BIN"
+    chrome_options.binary_location = "/app/.apt/usr/bin/google-chrome"
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(executable_path="CHROMEDRIVER_PATH", chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path="/app/.chromedriver/bin/chromedriver", chrome_options=chrome_options)
     driver.get(url)
 
     #Creates the lists that will be returned in the end
