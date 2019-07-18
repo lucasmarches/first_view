@@ -10,7 +10,10 @@ from bs4 import BeautifulSoup
 import re
 import requests
 import os
+from rq import Queue
+from worker import conn
 
+q = Queue(connection=conn)
 
 #Creates the function that will get the links
 def get_links(secao, day, month, year):
@@ -367,7 +370,7 @@ def links_all(request):
 
     #Call the function and save the information in the database
     for num in range(1,4):
-        content = get_links(num, day, month, year)
+        result = q.enqueue(get_links, num, day, month, year)
         for el in range(0,len(content[0])):
             if num == 1:
                 instance = LinkSection1.objects.create(link=content[0][el], origin = content[1][el], measure = content[2][el], intro = content[3][el])
