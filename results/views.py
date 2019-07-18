@@ -5,6 +5,7 @@ from django.views import generic
 from .models import LinkSection1, LinkSection2, LinkSection3, PublicJobs, CadeCases
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import re
 import requests
