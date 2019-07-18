@@ -17,7 +17,7 @@ def get_links(secao, day, month, year):
     #Open the browser in headless mode and go to the webpage where the scrapping will start
     options = Options()
     options.headless = True
-    options.binary_location = "/app/vendor/geckodriver/geckodriver"
+    options.binary_location = "/app/.apt/usr/bin/geckodriver"
     driver = webdriver.Firefox(options=options)
     driver.get(url)
 
