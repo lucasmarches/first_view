@@ -360,7 +360,7 @@ def analyze(request):
     #Call the important decisions function that will return a list of four lists
     imp_decisions_info = important_decisions()
     #Call section2 to offer the dowload file with the new jobs
-    section2()
+    #section2()
 
     #Creates the context that will contain all the information gathered by the algorithm to be displayed in the page
     context = {
