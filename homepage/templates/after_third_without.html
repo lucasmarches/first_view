@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="text_body">
+  <p> I finished loading all the content in the three sections. Let me wuickly analyze it for you </p>
+  <div id="loading_div"></div>
+  <div id="button_div"><a href="{% url 'results_page_end' %}" id="a_yes"> <button type="button" id="yes_btn"><span>Yes</span></button> </a></div>
+</div>
+  {% load static %}
+  <script src="{% static 'js/homepage.js' %}"></script>
+{% endblock %}

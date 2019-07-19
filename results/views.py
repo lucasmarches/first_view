@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
+from django.http import HttpResponseRedirect
 from .models import LinkSection1, LinkSection2, LinkSection3, PublicJobs, CadeCases
 from bs4 import BeautifulSoup
 import re
 import requests
-import os
 import json
 
 
@@ -300,6 +300,76 @@ def section2():
         instance = PublicJobs.objects.create(legal_intrument=el[0], job_giver = el[1], appointed = el[2], job = el[3], where = el[4], das_code = el[5], link = el[6], date = el[7])
         instance.save()
 
+def links_first(request):
+    from datetime import date
+    #Get the day, necessary for the url where the information is
+    date = date.today()
+    year = date.year
+    month = date.month
+    day = date.day
+
+    #Delete all the records in the database to make sure the app is not acessing links from previous days
+    LinkSection1.objects.all().delete()
+
+    #Call the function and save the information in the database
+    content = get_links(1, day, month, year)
+    success = False
+    for el in range(0,len(content[0])):
+        instance = LinkSection1.objects.create(link=content[0][el], origin = content[1][el], measure = content[2][el], intro = content[3][el])
+    return render(request,'after_first.html')
+
+def links_second(request):
+    from datetime import date
+    #Get the day, necessary for the url where the information is
+    date = date.today()
+    year = date.year
+    month = date.month
+    day = date.day
+
+    #Delete all the records in the database to make sure the app is not acessing links from previous days
+    LinkSection2.objects.all().delete()
+
+    #Call the function and save the information in the database
+    content = get_links(2, day, month, year)
+    for el in range(0,len(content[0])):
+        instance = LinkSection2.objects.create(link=content[0][el], origin = content[1][el], measure = content[2][el], intro = content[3][el])
+
+    return render(request,'after_second.html')
+
+def links_third(request):
+    from datetime import date
+    #Get the day, necessary for the url where the information is
+    date = date.today()
+    year = date.year
+    month = date.month
+    day = date.day
+
+    #Delete all the records in the database to make sure the app is not acessing links from previous days
+    LinkSection3.objects.all().delete()
+
+    #Call the function and save the information in the database
+    content = get_links(3, day, month, year)
+    for el in range(0,len(content[0])):
+        instance = LinkSection3.objects.create(link=content[0][el], origin = content[1][el], measure = content[2][el], intro = content[3][el])
+
+    return render(request,'after_third_without.html')
+
+def analyze(request):
+    #Call the antitrust function that will return a list containing three lists
+    cade_info = cade()
+    #Call the important decisions function that will return a list of four lists
+    imp_decisions_info = important_decisions()
+    #Call section2 to offer the dowload file with the new jobs
+    section2()
+
+    #Creates the context that will contain all the information gathered by the algorithm to be displayed in the page
+    context = {
+    'cade': cade_info,
+    'imp_decisions': imp_decisions_info
+    }
+
+    #Return the updated template
+    return render(request,'after_third.html', context=context)
 
 def links_all(request):
     from datetime import date
