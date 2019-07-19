@@ -3,25 +3,24 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
 from .models import LinkSection1, LinkSection2, LinkSection3, PublicJobs, CadeCases
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import re
 import requests
 import os
+import json
 
 
 #Creates the function that will get the links
 def get_links(secao, day, month, year):
+    #Get the html code from the page
     url = "http://www.in.gov.br/leiturajornal?data=" + str(day) + "-" + str(month) + "-" + str(year) + "&secao=do" + str(secao)
-    #Open the browser in headless mode and go to the webpage where the scrapping will start
-    chrome_options = Options()
-    chrome_options.binary_location = "/app/.apt/usr/bin/google-chrome"
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(executable_path="/app/.chromedriver/bin/chromedriver", chrome_options=chrome_options)
-    driver.get(url)
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, "html.parser")
+    #Select only the part with the information needed
+    links = soup.find_all(id="params")
+
+    #Transform the element in a json
+    d = json.loads(links[0].text)
 
     #Creates the lists that will be returned in the end
     links_list = []
@@ -29,62 +28,13 @@ def get_links(secao, day, month, year):
     decisions_list = []
     intro_list = []
 
-    #Get the first 10 links and append it to the links list
-    links_first_10 = driver.find_elements_by_css_selector('li.materia-link > a')
-    dept_first_10 = driver.find_elements_by_css_selector('li.materia-link > a > small')
-    dec_first_10 = driver.find_elements_by_css_selector('li.materia-link > a > h6')
-    intro_first_10 = driver.find_elements_by_css_selector('li.materia-link > a > p')
-    for el in range(0,10):
-        links_list.append(links_first_10[el].get_attribute('href'))
-        department_list.append(dept_first_10[el].text)
-        decisions_list.append(dec_first_10[el].text)
-        intro_list.append(intro_first_10[el].text)
+    for el in d["jsonArray"]:
+        department_list.append(el["hierarchyStr"])
+        decisions_list.append(el["title"])
+        intro_list.append(el["content"])
+        link = "http://www.in.gov.br/en/web/dou/-/" + el['urlTitle']
+        links_list.append(link)
 
-    #Click the next button. Because it is the first page, there is only one button with this class
-    driver.find_element_by_css_selector('b > span.pagination-button').click()
-
-    #Get the 10 links in the second page
-    links_second_10 = driver.find_elements_by_css_selector('li.materia-link > a')
-    dept_second_10 = driver.find_elements_by_css_selector('li.materia-link > a > small')
-    dec_second_10 = driver.find_elements_by_css_selector('li.materia-link > a > h6')
-    intro_second_10 = driver.find_elements_by_css_selector('li.materia-link > a > p')
-    for el in range(0,10):
-        links_list.append(links_second_10[el].get_attribute('href'))
-        department_list.append(dept_second_10[el].text)
-        decisions_list.append(dec_second_10[el].text)
-        intro_list.append(intro_second_10[el].text)
-
-    #Check if there is a next button. While there is, click on it and copy the links and all the other elements
-    buttons = driver.find_elements_by_css_selector('span.pagination-button')
-    while len(buttons) == 7:
-        buttons[-1].click()
-        page_links = driver.find_elements_by_css_selector('li.materia-link > a')
-        page_dept = driver.find_elements_by_css_selector('li.materia-link > a > small')
-        page_dec = driver.find_elements_by_css_selector('li.materia-link > a > h6')
-        page_intro = driver.find_elements_by_css_selector('li.materia-link > a > p')
-        #In case of error in the cretion of the scrapped page, it adds elements to the list with content to prevent error of index out of range
-        if len(page_intro) < 10:
-            errors = 10 - len(page_intro)
-            for num in range(errors):
-                intro_list.append("Error in the page")
-        for el in range(len(page_links)):
-            links_list.append(page_links[el].get_attribute('href'))
-        for el in range(len(page_dept)):
-            department_list.append(page_dept[el].text)
-        for el in range(len(page_dec)):
-            decisions_list.append(page_dec[el].text)
-        for el in range(len(page_intro)):
-            #This prevent crashing in case of an error in the creation of the scrapped webpage by ignoring the content in the page
-            if len(page_intro) < 10:
-                intro_list.append("Error in the page")
-            else:
-                intro_list.append(page_intro[el].text)
-        buttons = driver.find_elements_by_css_selector('span.pagination-button')
-
-    #closes the driver
-    driver.close()
-
-    #and returns the file with all the links
     return [links_list, department_list, decisions_list, intro_list]
 
 #Function to analyze and find the result in a Brazilian antitrust decision
@@ -131,7 +81,7 @@ def cade():
     #Check to see if it is related to the antitrust body and it is not the ATA from the last public meeting
     #If yes and if it fits another set of criteria, open the link
     for element in section1:
-        department_hierarchy = element.origin.split(">")
+        department_hierarchy = element.origin.split("/")
         if len(department_hierarchy) > 1 and department_hierarchy[1].strip() == "Conselho Administrativo de Defesa Econômica" and "ATA" not in element.measure and "PAUTA" not in element.measure:
             link_1 = element.link
             r_1 = requests.get(link_1)
@@ -191,7 +141,7 @@ def cade():
     #SECTION 3
     #Iterate through all the section 3 information to find what realtes to the antitrust agency
     for element in section3:
-        department_hierarchy_3 = element.origin.split(">")
+        department_hierarchy_3 = element.origin.split("/")
         if len(department_hierarchy_3) > 1 and department_hierarchy_3[1].strip() == "Conselho Administrativo de Defesa Econômica":
             link_3 = element.link
             r_3 = requests.get(link_3)
@@ -236,7 +186,7 @@ def important_decisions():
     #Iterate through all the decision to see if it comes from the areas that deserves more attention and save it
     section1 = LinkSection1.objects.all()
     for element in section1:
-        ministry = element.origin.split(">")
+        ministry = element.origin.split("/")
         #First, check if it comes from the presidency
         if ministry[0] == "Atos do Poder Executivo":
             mp = element.measure.split("Nº")[0]

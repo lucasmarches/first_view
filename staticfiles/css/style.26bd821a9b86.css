@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: 'B612 Mono', monospace;
+  background-color: #E6E6DC;
+  text-decoration: none;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #81A594;
+  margin-top: 2rem;
+}
+
+.topnav a {
+  margin: 0;
+  float: left;
+  color: #E6E6DC;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  color: #FFFFFF;
+}
+
+.topnav a:hover {
+  background-color: #00628B;
+}
+
+.topnav a.right {
+  float: right;
+  font-size: 3rem;
+}
+
+.topnav a.right:hover {
+  background-color: #81A594;
+}
+
+.text_body {
+  margin: auto;
+  margin-top: 6rem;
+  width: 50%;
+  padding: 1rem;
+  border:0.1rem;
+  color: #00628B;
+  border-color: #FFFFFF;
+  border-style: solid;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.cade, .imp_decisions {
+  margin: auto;
+  margin-top: 3rem;
+  width: 80%;
+  padding: 1rem;
+  border:0.1rem;
+  color: #00628B;
+  border-color: #FFFFFF;
+  border-style: solid;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.other_info {
+  display: none;
+}
+
+.cade_other:hover .other_info {
+    display: block;
+}
+
+button {
+  display: block;
+  margin: auto;
+  background-color: #81A594;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-family: 'B612 Mono', monospace;
+}
+
+.loading {
+  display: block;
+  margin: auto;
+}
+
+button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+button:hover span {
+  padding-right: 25px;
+}
+
+button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+#a_yes {
+  text-decoration: none;
+}
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: auto;
+  font-size: 0.8rem;
+}
+
+table, th, td {
+  border: 0.1rem solid white;
+}
+
+th, td {
+  padding: 0.7rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+td {
+  vertical-align: middle;
+}
+
+tr:hover {background-color: #f5f5f5;}
+
+.public_jobs_title, .cade_cases_title {
+  width: 95%;
+  margin: auto;
+}
+
+.pagination_bottom {
+  font-size: 0.7rem;
+  width: 95%;
+  margin: auto;
+  padding-bottom: 1rem;
+}
+
+.pagination {
+  font-size: 0.7rem;
+  width: 95%;
+  margin: auto;
+}
