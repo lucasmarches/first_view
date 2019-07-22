@@ -205,6 +205,7 @@ def important_decisions():
                 links_other.append([element.origin, element.intro, element.link])
     return ([links_emergencial_dec, links_presidency, links_economy, links_other])
 
+"""
 #Function to save in the database the name of the public jobs nominations
 def section2(request):
     from datetime import date
@@ -301,7 +302,7 @@ def section2(request):
         instance.save()
 
     return render(request,'after_section2.html')
-
+"""
 def links_first(request):
     from datetime import date
     #Get the day, necessary for the url where the information is
