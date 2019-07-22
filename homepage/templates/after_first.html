@@ -2,10 +2,15 @@
 
 {% block content %}
 <div class="text_body">
-  <p> I finished loading all the content in the first section. I will start now the second section </p>
-  <div id="loading_div"></div>
-  <div id="button_div"><a href="{% url 'results_page_second' %}" id="a_yes"> <button type="button" id="yes_btn"><span>Yes</span></button> </a></div>
+  <p> I finished loading all the content in the first section. I will start now the second section. </p>
+  {% load static %}
+  <img  src="{% static 'img/loading.gif' %}" class="center">
 </div>
-{% load static %}
-<script src="{% static 'js/homepage.js' %}"></script>
+
+<script language="javascript">
+  window.onload = function() {
+    window.location.href = "https://firstview.herokuapp.com/results/second";
+  }
+</script>
+
 {% endblock %}

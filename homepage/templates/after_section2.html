@@ -2,13 +2,14 @@
 
 {% block content %}
 <div class="text_body">
-  <p> I finished loading all the content in the second section. I will start now the third and last section, which is usually the longest. </p>
+  <p> Adding the public jobs posted today to the database. After that, it is on you. </p>
   {% load static %}
   <img  src="{% static 'img/loading.gif' %}" class="center">
 </div>
+
 <script language="javascript">
   window.onload = function() {
-    window.location.href = "https://firstview.herokuapp.com/results/third";
+    window.location.href = "https://firstview.herokuapp.com/results";
   }
 </script>
 {% endblock %}

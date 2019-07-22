@@ -206,7 +206,7 @@ def important_decisions():
     return ([links_emergencial_dec, links_presidency, links_economy, links_other])
 
 #Function to save in the database the name of the public jobs nominations
-def section2():
+def section2(request):
     from datetime import date
     date = date.today()
     #Where the end content will be stored to go in the model
@@ -300,6 +300,8 @@ def section2():
         instance = PublicJobs.objects.create(legal_intrument=el[0], job_giver = el[1], appointed = el[2], job = el[3], where = el[4], das_code = el[5], link = el[6], date = el[7])
         instance.save()
 
+    return render(request,'after_section2.html')
+
 def links_first(request):
     from datetime import date
     #Get the day, necessary for the url where the information is
@@ -359,8 +361,6 @@ def analyze(request):
     cade_info = cade()
     #Call the important decisions function that will return a list of four lists
     imp_decisions_info = important_decisions()
-    #Call section2 to offer the dowload file with the new jobs
-    #section2()
 
     #Creates the context that will contain all the information gathered by the algorithm to be displayed in the page
     context = {
